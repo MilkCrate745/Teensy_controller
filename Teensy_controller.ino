@@ -1,3 +1,4 @@
+
 /*
   This program is for use with the teensy 2.0
   and creates a USB Joystick + Keyboard that
@@ -55,6 +56,9 @@ void setup() {
   // require you to manually call Joystick.send_now().
   Joystick.useManualSend(true);
 
+  //initialize control over the keyboard
+  Keyboard.begin();
+
   //Set pins as inputs with pullups.
   //HIGH --> off
   //LOW  --> on
@@ -76,22 +80,17 @@ void loop() {
   button17.update();
   
   if (button16.fallingEdge()) {
-    Keyboard.set_modifier(MODIFIERKEY_CTRL | MODIFIERKEY_SHIFT);
-    Keyboard.send_now();
-    //Keyboard.set_modifier(MODIFIERKEY_SHIFT);
-    Keyboard.set_key1(KEY_EQUAL);
-    Keyboard.send_now();    
-    Keyboard.set_key1(0);
-    Keyboard.set_modifier(0);
+    //left_ctrl --> 0x80
+    //left_shift --> 0x81
+    Keyboard.press(0x80 | 0x81);
+    Keyboard.press('=');
+    Keyboard.releaseAll();
   }
   
   if (button17.fallingEdge()) {
-    Keyboard.set_modifier(MODIFIERKEY_CTRL);
-    Keyboard.send_now();
-    Keyboard.set_key2(KEY_MINUS);
-    Keyboard.send_now();
-    Keyboard.set_key2(0);
-    Keyboard.set_modifier(0);
+    Keyboard.press(0x80);
+    Keyboard.press('-');
+    Keyboard.releaseAll();
   }
 
   // read 2 analog inputs and use them for the joystick axis
@@ -143,7 +142,7 @@ Set to -1 for neutral position
 
   //read buttons
   for (int i = 0; i > 3; i ++) {
-    if (!digitalRead(i)){
+    if (digitalRead(i)==LOW){
       count = count + 1;
       //Right button flag
       if (buttons[i] == 0) {
