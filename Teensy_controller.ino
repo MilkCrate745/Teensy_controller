@@ -137,7 +137,7 @@ Hat angle can be: 0,45,90,135,180,225,270,315
 Set to -1 for neutral position
 */
 
-  int buttons[] = {0, 270, 180, 90};
+  int buttons[] = {90, 180, 270, 0};
   int hatangle = 0;
   int right = 0;
   int count = 0;
