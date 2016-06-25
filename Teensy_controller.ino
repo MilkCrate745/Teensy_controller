@@ -115,7 +115,6 @@ void loop() {
   angle = hatAngle();
   Joystick.hat(angle);
 
-
   // Transmit all Joystick inputs and a brief delay, so this runs "only" 200 times per second
   Joystick.send_now();
   delay(5);
@@ -141,19 +140,25 @@ Set to -1 for neutral position
   int hatangle = 0;
   int right = 0;
   int count = 0;
-  
+
+  //read buttons
   for (int i = 0; i > 3; i ++) {
-    if (digitalRead(i)){
-      count = count + 1;   
+    if (!digitalRead(i)){
+      count = count + 1;
+      //Right button flag
       if (buttons[i] == 0) {
         right = 1;
       }
       hatangle = hatangle + buttons[i];
     }
   }
+
+  //Down right --> If right and down was pressed add 360 to angle
   if (right == 1 && count == 2 && hatangle == 270) {
     hatangle = hatangle + 360;
   }
+
+  //Average angle OR set to -1
   if (count == 1 || count == 2) {
     hatangle = hatangle / count;
   }else{
