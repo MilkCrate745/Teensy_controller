@@ -46,9 +46,9 @@ const int actionButtons = 12;//Volume and D-Pad removed; Pins 4 - 15
 byte allButtons[actionButtons];
 int angle = 0;//i dont think i need this
 
-//Volume buttons, 10 ms delay
-Bounce button16 = Bounce(16, 10);
-Bounce button17 = Bounce(17, 10);
+//Volume buttons, 2 ms delay
+Bounce button16 = Bounce(16, 2);
+Bounce button17 = Bounce(17, 2);
 
 void setup() {
   // configure the joystick to manual send mode.  This gives precise
@@ -114,9 +114,9 @@ void loop() {
   angle = hatAngle();
   Joystick.hat(angle);
 
-  // Transmit all Joystick inputs and a brief delay, so this runs "only" 200 times per second
+  // Transmit all Joystick inputs and a brief delay, so this runs "only" 500 times per second
   Joystick.send_now();
-  delay(5);
+  delay(2);
 }
 
 
@@ -152,7 +152,7 @@ Set to -1 for neutral position
     }
   }
 
-  //Down right --> If right and down was pressed add 360 to angle
+  //Down right --> When right and down are pressed add 360 to angle
   if (right == 1 && count == 2 && hatangle == 270) {
     hatangle = hatangle + 360;
   }
